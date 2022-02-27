@@ -40,15 +40,17 @@ if test -f "${sitepath}/inventory.html"; then
     echo "inventory exists";
 else
     echo "creating inventory";
-    echo -e 'Log Type\t-\tTime Created\t-\tType\t-\tSize' >{doc}/inventory.html
+    echo -e 'Log Type\t-\tTime Created\t-\tType\t-\tSize' > ${sitepath}/inventory.html
 fi
 
 if test -f "${sitepath}/inventory.html"; then
-    size=$(du -h /tmp/${name}-httpd-logs-${timestamp}.tar | awk '{print $1}')
-	echo -e "httpd-logs\t-\t${timestamp}\t-\ttar\t-\t${size}" >> ${docroot}/invetntory.html
+    echo "updating inventory";
+    size=$(du -h ${file} | awk '{print $1}')
+	echo -e "httpd-logs\t-\t${timestamp}\t-\ttar\t-\t${size}" >> ${sitepath}/inventory.html
 fi
 
-if [[ ! -f ${cronpath} ]];
-then
+if test -f ${cronpath}; then
+    echo "cron job exists";
+else
     echo " * * * * * root/Automation_Project/automation.sh" >> ${cronpath}
 fi
